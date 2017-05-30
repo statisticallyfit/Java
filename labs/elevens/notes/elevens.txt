@@ -1,0 +1,854 @@
+Activity 1: 
+ 
+1. Complete the implementation of the provided Card class. You will be required to complete: 
+a. a constructor that takes two String parameters that represent the card’s rank and suit, and an int
+parameter that represents the point value of the card; 
+b. accessor methods for the card’s rank, suit, and point value;  
+c. a method to test equality between two card objects; and 
+d. the toString method to create a String that contains the rank, suit, and point value of the card 
+object. The string should be in the following format:
+rank of suit (point value = pointValue) 
+
+
+
+public class Card {
+
+    private String suit;
+    private String rank;
+    private int pointValue;
+
+    /**
+     * Creates a new <code>Card</code> instance.
+     *
+     * @param cardRank  a <code>String</code> value
+     *                  containing the rank of the card
+     * @param cardSuit  a <code>String</code> value
+     *                  containing the suit of the card
+     * @param cardPointValue an <code>int</code> value
+     *                  containing the point value of the card
+     */
+    public Card(String cardRank, String cardSuit, int cardPointValue) {
+		this.suit = cardSuit;
+        this.rank = cardRank;
+        this.pointValue = cardPointValue;
+    }
+
+    public String suit() {
+		return suit;
+    }
+
+    public String rank() {
+        return rank;
+    }
+
+    public int pointValue() {
+        return pointValue;
+    }
+
+    /** Compare this card with the argument.
+     * @param otherCard the other card to compare to this
+     * @return true if the rank, suit, and point value of this card
+     *              are equal to those of the argument;
+     *         false otherwise.
+     */
+    public boolean matches(Card otherCard) {
+		return this.suit.equals(otherCard.suit()) &&
+                this.rank.equals(otherCard.rank()) &&
+                this.pointValue == otherCard.pointValue();
+    }
+
+    /**
+     * Converts the rank, suit, and point value into a string in the format
+     *     "[Rank] of [Suit] (point value = [PointValue])".
+     * This provides a useful way of printing the contents
+     * of a <code>Deck</code> in an easily readable format or performing
+     * other similar functions.
+     *
+     * @return a <code>String</code> containing the rank, suit,
+     *         and point value of the card.
+     */
+    @Override
+    public String toString() {
+		return this.rank + " of " + this.suit + " (point value = " + this.pointValue + ")";
+    }
+}
+
+
+
+2. Once you have completed the Card class, find the CardTester.java file in the Activity1 Starter
+Code folder. Create three Card objects and test each method for each Card object. 
+
+public class CardTester {
+
+    /**
+     * The main method in this class checks the Card operations for consistency.
+     *	@param args is not used.
+     */
+    public static void main(String[] args) {
+		Card card1 = new Card("four", "spades", 4);
+        System.out.println(card1);
+
+        Card card2 = new Card("ace", "hearts", 1);
+        System.out.println(card2);
+
+        Card card3 = new Card("queen", "clubs", 11);
+        System.out.println(card3);
+    }
+}
+
+
+
+Activity 2: 
+
+Exercises: 
+1. Complete the implementation of the Deck class by coding each of the following:   
+• Deck constructor — This constructor receives three arrays as parameters. The arrays contain
+the ranks, suits, and point values for each card in the deck. The constructor creates an
+ArrayList, and then creates the specified cards and adds them to the list. 
+For example, if ranks = {"A", "B", "C"}, suits = {"Giraffes", "Lions"},
+and values = {2,1,6}, the constructor would create the following cards: 
+["A", "Giraffes", 2], ["B", "Giraffes", 1], ["C", "Giraffes", 6], 
+["A", "Lions", 2], ["B", "Lions", 1], ["C", "Lions", 6] 
+and would add each of them to cards. The parameter size would then be set to the size of
+cards, which in this example is 6. 
+Finally, the constructor should shuffle the deck by calling the shuffle method. Note that you
+will not be implementing the shuffle method until Activity 4. 
+• isEmpty — This method should return true when the size of the deck is 0; false
+otherwise. 
+• size — This method returns the number of cards in the deck that are left to be dealt. 
+Activity 2 - 5 - Elevens Student Lab Guide  
+• deal — This method “deals” a card by removing a card from the deck and returning it, if there
+are any cards in the deck left to be dealt. It returns null if the deck is empty. There are several
+ways of accomplishing this task. Here are two possible algorithms:
+Algorithm 1: Because the cards are being held in an ArrayList, it would be easy to simply
+call the List method that removes an object at a specified index, and return that object.
+Removing the object from the end of the list would be more efficient than removing it from the
+beginning of the list. Note that the use of this algorithm also requires a separate “discard” list to
+keep track of the dealt cards. This is necessary so that the dealt cards can be reshuffled and dealt
+again.
+Algorithm 2: It would be more efficient to leave the cards in the list. Instead of removing the
+card, simply decrement the size instance variable and then return the card at size. In this
+algorithm, the size instance variable does double duty; it determines which card to “deal” and
+it also represents how many cards in the deck are left to be dealt. This is the algorithm that you 
+should implement. 
+
+
+
+
+import java.util.List;
+import java.util.ArrayList;
+
+/**
+ * The Deck class represents a shuffled deck of cards.
+ * It provides several operations including
+ *      initialize, shuffle, deal, and check if empty.
+ */
+public class Deck {
+
+    private List<Card> cards;
+    private int size;
+
+
+    /**
+     * Creates a new <code>Deck</code> instance.<BR>
+     * It pairs each element of ranks with each element of suits,
+     * and produces one of the corresponding card.
+     * @param ranks is an array containing all of the card ranks.
+     * @param suits is an array containing all of the card suits.
+     * @param values is an array containing all of the card point values.
+     */
+    public Deck(String[] ranks, String[] suits, int[] values) {
+        cards = new ArrayList<Card>();
+
+        for(int i = 0; i < ranks.length; i++)
+            for(String aSuit : suits)
+                cards.add(new Card(ranks[i], aSuit, values[i]));
+
+        size = cards.size();
+        //shuffle();
+    }
+
+
+    /**
+     * Determines if this deck is empty (no undealt cards).
+     * @return true if this deck is empty, false otherwise.
+     */
+    public boolean isEmpty() {
+		return size == 0;
+    }
+
+    /**
+     * Accesses the number of undealt cards in this deck.
+     * @return the number of undealt cards in this deck.
+     */
+    public int size() {
+		return size;
+    }
+
+    /**
+     * Randomly permute the given collection of cards
+     * and reset the size to represent the entire deck.
+     */
+    public void shuffle() {
+		/* *** TO BE IMPLEMENTED IN ACTIVITY 4 *** */
+    }
+
+    /**
+     * Deals a card from this deck.
+     * @return the card just dealt, or null if all the cards have been
+     *         previously dealt.
+     */
+    public Card deal() { //returns the last card
+        if(cards.isEmpty())
+            return null;
+		size--;
+        return cards.get(size);
+    }
+
+    /**
+     * Generates and returns a string representation of this deck.
+     * @return a string representation of this deck.
+     */
+    @Override
+    public String toString() {
+        String rtn = "size = " + size + "\nUndealt cards: \n";
+
+        for (int k = size - 1; k >= 0; k--) {
+            rtn = rtn + cards.get(k);
+            if (k != 0) {
+                rtn = rtn + ", ";
+            }
+            if ((size - k) % 2 == 0) {
+                // Insert carriage returns so entire deck is visible on console.
+                rtn = rtn + "\n";
+            }
+        }
+
+        rtn = rtn + "\nDealt cards: \n";
+        for (int k = cards.size() - 1; k >= size; k--) {
+            rtn = rtn + cards.get(k);
+            if (k != size) {
+                rtn = rtn + ", ";
+            }
+            if ((k - cards.size()) % 2 == 0) {
+                // Insert carriage returns so entire deck is visible on console.
+                rtn = rtn + "\n";
+            }
+        }
+
+        rtn = rtn + "\n";
+        return rtn;
+    }
+}
+
+
+2. Once you have completed the Deck class, find DeckTester.java file in the Activity2 Starter
+Code folder. Add code in the main method to create three Deck objects and test each method for
+each Deck object. 
+
+
+
+
+public class DeckTester {
+
+    /**
+     * The main method in this class checks the Deck operations for consistency.
+     *	@param args is not used.
+     */
+    public static void main(String[] args) {
+
+        //TESTING CONSTRUCTOR:
+
+        String[] ranks1 = new String[]{"ace", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "jack", "queen", "king"};
+        String[] suits1 = new String[]{"hearts", "diamonds", "spades", "clubs"};
+        int[] points1 = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+
+        Deck deck1 = new Deck(ranks1, suits1, points1);
+        System.out.println(deck1 + "\n\n");
+
+        //------------------------------------------------------------
+        String[] ranks2 = new String[]{"A", "B", "C"};
+        String[] suits2 = new String[]{"Giraffes", "Lions"};
+        int[] values2 = new int[]{2, 1, 6};
+
+        Deck deck2 = new Deck(ranks2, suits2, values2);
+        System.out.println(deck2 + "\n\n");
+
+        //------------------------------------------------------------
+        String[] ranks3 = new String[]{"rose", "lily", "narcissa"};
+        String[] suits3 = new String[]{"pink", "white", "violet"};
+        int[] numPetals = new int[]{3, 5, 8};
+
+        Deck deck3 = new Deck(ranks3, suits3, numPetals);
+        System.out.println(deck3 + "\n\n");
+
+
+
+
+        //TESTING IS EMPTY
+
+        if(deck2.isEmpty())
+            System.err.println("ERROR: deck1 is full and cannot be declared empty");
+
+
+        //TESTING DEAL
+
+        System.out.println("Dealing a card: ");
+        System.out.println("    deal: " + deck2.deal() + "\n\n");
+        System.out.println("Deck after 1 card dealt: ");
+        System.out.println("    test toString(): " + deck2.toString());
+        System.out.println("    test isEmpty(): ");
+        if((deck2.size() == 0) != (deck2.isEmpty()))
+            System.err.println("Method isEmpty() failed since size is " + deck2.size() + " and isEmpty() returned: " + deck3.isEmpty());
+
+        System.out.println("Deal the leftover five cards: " );
+        for(int i = 0; i < 5; i++){
+            System.out.println("    deal: " + deck2.deal());
+        }
+
+        System.out.println("Deal from empty deck:");
+        System.out.println("    deal(): " + deck2.deal());
+    }
+}
+
+
+
+
+ACTIVITY 3: 
+
+Exercises: 
+
+1. Use the file Shuffler.java, found in the Activity3 Starter Code, to implement the perfect
+shuffle and the efficient selection shuffle methods as described in the Exploration section of this
+activity. You will be shuffling arrays of integers.  
+
+
+public class Shuffler {
+
+    /**
+     * The number of consecutive shuffle steps to be performed in each call
+     * to each sorting procedure.
+     */
+    private static final int SHUFFLE_COUNT = 8;
+
+    /**
+     * The number of values to shuffle.
+     */
+    private static final int VALUE_COUNT = 10; //was 4
+
+    /**
+     * Tests shuffling methods.
+     * @param args is not used.
+     */
+    public static void main(String[] args) {
+        System.out.println("Results of " + SHUFFLE_COUNT + " consecutive perfect shuffles:");
+
+        int[] values1 = new int[VALUE_COUNT];
+
+        for (int i = 0; i < values1.length; i++) {
+            values1[i] = i;
+        }
+
+        for (int j = 1; j <= SHUFFLE_COUNT; j++) {
+            perfectShuffle(values1);
+            System.out.print("  " + j + ":");
+            for (int k = 0; k < values1.length; k++) {
+                System.out.print(" " + values1[k]);
+            }
+            System.out.println();
+        }
+        System.out.println();
+
+        System.out.println("Results of " + SHUFFLE_COUNT +
+                " consecutive efficient selection shuffles:");
+        int[] values2 = new int[VALUE_COUNT];
+        for (int i = 0; i < values2.length; i++) {
+            values2[i] = i;
+        }
+        for (int j = 1; j <= SHUFFLE_COUNT; j++) {
+            selectionShuffle(values2);
+            System.out.print("  " + j + ":");
+            for (int k = 0; k < values2.length; k++) {
+                System.out.print(" " + values2[k]);
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+
+    /**
+     * Apply a "perfect shuffle" to the argument.
+     * The perfect shuffle algorithm splits the deck in half, then interleaves
+     * the cards in one half with the cards in the other.
+     * @param values is an array of integers simulating cards to be shuffled.
+     */
+    public static void perfectShuffle(int[] values) {
+        int[] shuffled = new int[VALUE_COUNT];
+
+        int k = 0;
+        for(int j = 0; j < (values.length + 1)/2; j++){
+            shuffled[k] = values[j];
+            k += 2;
+        }
+
+        k = 1;
+        for(int j = (values.length + 1)/2; j < values.length; j++){
+            shuffled[k] = values[j];
+            k += 2;
+        }
+
+        //copy shuffled elements into the values array
+        for(int i = 0; i < values.length; i++){
+            values[i] = shuffled[i];
+        }
+    }
+
+    /**
+     * Apply an "efficient selection shuffle" to the argument.
+     * The selection shuffle algorithm conceptually maintains two sequences
+     * of cards: the selected cards (initially empty) and the not-yet-selected
+     * cards (initially the entire deck). It repeatedly does the following until
+     * all cards have been selected: randomly remove a card from those not yet
+     * selected and add it to the selected cards.
+     * An efficient version of this algorithm makes use of arrays to avoid
+     * searching for an as-yet-unselected card.
+     * @param values is an array of integers simulating cards to be shuffled.
+     */
+    public static void selectionShuffle(int[] values) {
+
+        for(int k = values.length - 1; k > 0; k--){
+            int randIndex = (int)(Math.random() * (k + 1));
+            //swap
+            int temp = values[k];
+            values[k] = values[randIndex];
+            values[randIndex] = temp;
+        }
+    }
+}
+
+
+2. Shuffler.java also provides a main method that calls the shuffling methods. Execute the
+main method and inspect the output to see how well each shuffle method actually randomizes the
+array elements. You should execute main with different values of SHUFFLE_COUNT and
+VALUE_COUNT.  
+
+
+Results of 8 consecutive perfect shuffles:
+  1: 0 5 1 6 2 7 3 8 4 9
+  2: 0 7 5 3 1 8 6 4 2 9
+  3: 0 8 7 6 5 4 3 2 1 9
+  4: 0 4 8 3 7 2 6 1 5 9
+  5: 0 2 4 6 8 1 3 5 7 9
+  6: 0 1 2 3 4 5 6 7 8 9
+  7: 0 5 1 6 2 7 3 8 4 9
+  8: 0 7 5 3 1 8 6 4 2 9
+
+
+Results of 8 consecutive efficient selection shuffles:
+  1: 8 0 7 9 2 3 1 5 4 6
+  2: 3 9 2 0 5 1 7 4 8 6
+  3: 1 7 3 2 9 5 8 4 6 0
+  4: 5 1 0 9 3 7 2 4 8 6
+  5: 2 6 4 8 9 3 0 7 5 1
+  6: 2 0 5 3 8 4 6 9 7 1
+  7: 9 0 7 5 4 6 1 3 8 2
+  8: 0 7 6 8 5 3 2 1 9 4
+
+
+At the sixth shuffle, the perfect shuffle algorithm restores the original order of the cards for a 10-card deck. 
+Therefore, this is not as good a method as the selection shuffle below. The selection shuffle
+chooses random indexes each time, also moving elements that were previously moved in a shuffle. For instance, 
+in one set of a shuffle, the random index could be 1 and then later 1 again, which double-shuffles some elements.
+
+
+
+Questions:  
+
+1. Write a static method named flip that simulates a flip of a weighted coin by returning either
+"heads" or "tails" each time it is called. The coin is twice as likely to turn up heads as tails.
+Thus, flip should return "heads" about twice as often as it returns "tails." 
+
+public static String flip(){
+        int randNum = (int)(Math.random() * 3);
+
+        if(randNum == 0 || randNum == 1)
+            return "heads";
+        return "tails";
+    }
+
+2. Write a static method named arePermutations that, given two int arrays of the same length
+but with no duplicate elements, returns true if one array is a permutation of the other (i.e., the
+arrays differ only in how their contents are arranged). Otherwise, it should return false. 
+
+//Precondition: arrays are same length but
+    //and each do not have duplicates
+    public static boolean arePermutations(int[] a1, int[] a2){
+        boolean commonElementWasFound = false;
+
+        for(int i = 0; i < a1.length; i++){
+            for(int j = 0; j < a2.length; j++){
+                if(a1[i] == a2[j]){
+                    commonElementWasFound = true;
+                }
+            }
+            if(!commonElementWasFound)
+                return false;
+            commonElementWasFound = false;
+        }
+        return true;
+    }
+
+3. Suppose that the initial contents of the values array in Shuffler.java are {1, 2, 3,
+4}. For what sequence of random integers would the efficient selection shuffle change values to
+contain {4, 3, 2, 1}? 
+
+
+The random indexes could be {0, 1, 1 0}. When k = 3 and r = 0, then the list is: 4, 2, 3, 1. When k = 2 and r = 1
+the list is 4, 3, 2, 1. When k = 1 and r = 1, then the list ends up as: 4, 3, 2, 1, since 3 is swapped in the
+same place. The same thing happens with 4 when k = r = 0. 
+
+
+
+
+
+
+ACTIVITY 4: 
+
+Exercises: 
+
+1. The fileDeck.java, found in the Activity4 Starter Code folder, is a correct solution from 
+Activity 2. Complete the Deck class by implementing the
+shuffle method. Use the efficient
+selection shuffle algorithm from Activity 3.
+
+Note that the Deck constructor creates the deck and then calls the shuffle method. The
+shuffle method also needs to reset the value of size to indicate that all of the cards can be
+dealt again. 
+
+
+
+import java.util.List;
+import java.util.ArrayList;
+
+/**
+ * The Deck class represents a shuffled deck of cards.
+ * It provides several operations including
+ *      initialize, shuffle, deal, and check if empty.
+ */
+public class Deck {
+
+    private List<Card> cards;
+    private int size;
+
+
+    /**
+     * Creates a new <code>Deck</code> instance.<BR>
+     * It pairs each element of ranks with each element of suits,
+     * and produces one of the corresponding card.
+     * @param ranks is an array containing all of the card ranks.
+     * @param suits is an array containing all of the card suits.
+     * @param values is an array containing all of the card point values.
+     */
+    public Deck(String[] ranks, String[] suits, int[] values) {
+        cards = new ArrayList<Card>();
+
+        for(int i = 0; i < ranks.length; i++)
+            for(String aSuit : suits)
+                cards.add(new Card(ranks[i], aSuit, values[i]));
+
+        size = cards.size();
+        shuffle();
+    }
+
+
+    /**
+     * Determines if this deck is empty (no undealt cards).
+     * @return true if this deck is empty, false otherwise.
+     */
+    public boolean isEmpty() {
+		return size == 0;
+    }
+
+    /**
+     * Accesses the number of undealt cards in this deck.
+     * @return the number of undealt cards in this deck.
+     */
+    public int size() {
+		return size;
+    }
+
+    /**
+     * Randomly permute the given collection of cards
+     * and reset the size to represent the entire deck.
+     */
+    public void shuffle() {
+        for(int k = cards.size() - 1; k > 0; k--){
+            int randIndex = (int)(Math.random() * (k + 1));
+            //swap
+            Card temp = cards.get(k);
+            cards.set(k, cards.get(randIndex));
+            cards.set(randIndex, temp);
+        }
+        size = cards.size();
+    }
+
+    /**
+     * Deals a card from this deck.
+     * @return the card just dealt, or null if all the cards have been
+     *         previously dealt.
+     */
+    public Card deal() { //returns the last card
+        if(this.isEmpty())
+            return null;
+		size--;
+        return cards.get(size);
+    }
+
+    /**
+     * Generates and returns a string representation of this deck.
+     * @return a string representation of this deck.
+     */
+    @Override
+    public String toString() {
+        String rtn = "size = " + size + "\nUndealt cards: \n";
+
+        for (int k = size - 1; k >= 0; k--) {
+            rtn = rtn + cards.get(k);
+            if (k != 0) {
+                rtn = rtn + ", \n";
+            }
+            /*if ((size - k) % 2 == 0) {
+                // Insert carriage returns so entire deck is visible on console.
+                rtn = rtn + "\n";
+            }*/
+        }
+
+        rtn = rtn + "\nDealt cards: \n";
+        for (int k = cards.size() - 1; k >= size; k--) {
+            rtn = rtn + cards.get(k);
+            if (k != size) {
+                rtn = rtn + ", ";
+            }
+            if ((k - cards.size()) % 2 == 0) {
+                // Insert carriage returns so entire deck is visible on console.
+                rtn = rtn + "\n";
+            }
+        }
+
+        rtn = rtn + "\n";
+        return rtn;
+    }
+}
+
+
+2. The DeckTester.java file, found in the Activity4 Starter Code folder, provides a basic set 
+of Deck tests. It is similar to the DeckTester class you might have written in Activity 2. 
+Add additional code at the bottom of the main method to create a standard deck of 52 cards and
+test the shuffle method. You can use the Deck toString method to “see” the cards after 
+every shuffle. 
+
+
+public class DeckTester {
+
+    /**
+     * The main method in this class checks the Deck operations for consistency.
+     *	@param args is not used.
+     */
+    public static void main(String[] args) {
+
+        String[] ranks = {"jack", "queen", "king"};
+        String[] suits = {"blue", "red"};
+        int[] pointValues = {11, 12, 13};
+        Deck deck = new Deck(ranks, suits, pointValues);
+
+
+
+//**** THIS IS THE ADDITIONAL CODE TO CREATE A 52-CARD DECK
+
+        String[] ranks1 = new String[]{"ace", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "jack", "queen", "king"};
+        String[] suits1 = new String[]{"hearts", "diamonds", "spades", "clubs"};
+        int[] points1 = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+
+        Deck d = new Deck(ranks1, suits1, points1);
+
+        System.out.println("**** Original Deck Methods ****");
+        System.out.println("  toString:\n" + d.toString());
+        System.out.println("  isEmpty: " + d.isEmpty());
+        System.out.println("  size: " + d.size());
+        System.out.println();
+        System.out.println();
+
+        System.out.println("**** Deal a Card ****");
+        System.out.println("  deal: " + d.deal());
+        System.out.println();
+        System.out.println();
+
+        System.out.println("**** Deck Methods After 1 Card Dealt ****");
+        System.out.println("  toString:\n" + d.toString());
+        System.out.println("  isEmpty: " + d.isEmpty());
+        System.out.println("  size: " + d.size());
+        System.out.println();
+        System.out.println();
+
+        int deckSize = d.size();
+        System.out.println("**** Deal Remaining " + deckSize + " Cards ****");
+        for (int i = 0; i < deckSize; i++) {
+            System.out.println("  deal: " + d.deal());
+            System.out.println("  size: " + d.size());
+        }
+        System.out.println();
+        System.out.println();
+
+        System.out.println("**** Deck Methods After All Cards Dealt ****");
+        System.out.println("  toString:\n" + d.toString());
+        System.out.println("  isEmpty: " + d.isEmpty());
+        System.out.println("  size: " + d.size());
+        System.out.println();
+        System.out.println();
+
+        System.out.println("**** Deal a Card From Empty Deck ****");
+        System.out.println("  deal: " + d.deal());
+        System.out.println();
+        System.out.println();
+    }
+}
+
+
+
+
+ACTIVITY 5: 
+
+
+Exercises: 
+
+1. The folder Activity5 Starter Code contains the four subfolders Buggy1, Buggy2, Buggy3, and
+Buggy4. Each of these contains a different buggy version of the Deck class. These buggy decks have 
+been precompiled; only the Deck.class bytecode file is included. These buggy versions each
+contain one error caused by either moving a statement, or substituting one symbol for another, e.g.,
+1 for 0 or > for <. Test each of them with the DeckTester application provided in each
+folder: 
+java -ea DeckTester
+ 
+If you are using a Windows-based system, you can just execute the provided DeckTester.bat file. 
+Each of the four different DeckTester runs will produce an AssertionError exception,
+along with information about why the error occurred. For each error that occurs, write down which
+method or constructor of the buggy Deck class could contain the bug, and make an educated guess
+about the cause of the error. You might find it helpful to refer to your completed Deck class from
+Activity 4. 
+Note: The Buggy1 test will produce output similar to the following: 
+... >java -ea DeckTester
+Exception in thread "main" java.lang.AssertionError: isEmpty is
+false for an empty deck.
+   at DeckTester.testEmpty(DeckTester.java:98)
+   at DeckTester.test1CardDeck(DeckTester.java:28)
+   at DeckTester.main(DeckTester.java:12)
+
+
+The last three lines of output are a stack trace that tells you that the 
+• AssertionError occurred in the testEmpty method at line 98. 
+• testEmpty method was called from the test1CardDeck method at line 28. 
+• test1CardDeck method was called from the main method at line 12. 
+Record your conclusions below: 
+Buggy1:   
+Constructor or Method (write method name): isEmpty()     
+Describe a Possible Code Error:
+
+It is possible the size instance variable may not be updated each time a card is dealt. 
+Since no other error is stated, it is not possible that the size instance variable is not updated
+correctly. Therefore, the only conclusion to make is that the empty method code does something other than
+the code return size == 0. If the test done above this error passes, then it means the size is 0
+so isEmpty() must do something other than test size ==0. 
+
+
+Buggy2:   
+Constructor or Method (write method name):    size()  
+Describe a Possible Code Error:  
+
+The size variable may not be set equal to the cards.size() value in the constructor, 
+so the default value of 0 for integers shows up when size() is executed for this class. 
+
+
+Buggy3:   
+Constructor or Method (write method name):    shuffle()  
+Describe a Possible Code Error:  
+
+The shuffle method may not properly generate random indexes. It may simply swap the values at their
+original spots, so it would swap elements at 1 and 1, then elements at 2 and 2, in other words swapping
+the element with itself. This would make the order the same for both decks. 
+
+
+Buggy4:   
+Constructor or Method (write method name):      deal()
+Describe a Possible Code Error:  
+
+Since the size = 1 test and non-empty deck test pass, this must mean there is only one card in the deck. 
+Therefore, the conclusion to make is that the deal method is malfunctioning. The size variable is 
+decremented before is empty is tested, so if there is one card left, 
+then size is decremented, then there are 0 cards in the deck, so null is returned. 
+
+
+*************
+
+2. Now, examine the Buggy5 folder. This folder contains a Deck.java file with multiple errors. Use
+DeckTester to help you find the errors. Correct each error until the Deck class has passed all of
+its tests. 
+Note that you may receive a runtime error other than AssertionError when running
+DeckTester. If so, you may find it helpful to switch the order of 1-card deck and 2-card deck tests
+as follows: 
+public static void main(String[] args) {
+   test2CardDeck();   // order swapped
+   test1CardDeck();   // order swapped
+   testShuffle();
+   System.out.println("All tests passed!");
+} 
+
+
+
+1) shuffle method must have k >0 not k < 0 in the for loop
+
+2) isEmpty() must return size == 0 not size < 0
+3) must write size = cards.size(); in constructor after for loop
+4) must decrement size after is empty test in the deal method
+
+After all these errors were corrected, the tests passed. 
+
+
+
+
+
+
+
+
+
+
+ACTIVITY 6: Playing Elevens
+
+
+Questions:   
+1. List all possible plays for the board 
+(5spades, 4hearts, 2diamonds, 6clubs, Acespades, Jhearts, Kdiamonds, 5clubs, 2spades)
+
+5spades and 6clubs OR
+5 clubs and 6 clubs
+
+2. If the deck is empty and the board has three cards left, must they be J, Q, and K? Why or why not?
+
+Say the first three plays involve removing the J, Q, and K cards. Then, if we have left only cards that
+sum to 11, and do not get another set of J, Q, and K until the end, then the remaining three cards
+must be the J, Q, and K cards. But this only happens if all four sets of J, Q, and K are not all
+removed before the end of the game. 
+
+ 
+3. Does the game involve any strategy? That is, when more than one play is possible, does it matter
+which one is chosen? Briefly explain your answer. 
+
+No, there is no strategy, because the cards that are replaced come up by pure random chance, so no one
+can plan ahead to know what to anticipate. Thus, there is no strategy. 
+
+
+
+
+
+
+
