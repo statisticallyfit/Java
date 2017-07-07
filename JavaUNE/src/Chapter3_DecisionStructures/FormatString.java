@@ -55,6 +55,8 @@ public class FormatString {
         System.out.printf("%-8d%-8d\n", 45678, 456);
         System.out.printf("%-6d%-8d\n", 1234567, 1234); //  first has not been overwritten
 
+        System.out.printf("\nCLOCK flag zero and width: %02d:%02d:%02d\n", 4, 53, 9);
+
 
         System.out.println("\n-------- Integer format specifiers: "); //---------------
         System.out.printf("Sheila worked %d hours this week and %d hours last week\n", 40, 75);
