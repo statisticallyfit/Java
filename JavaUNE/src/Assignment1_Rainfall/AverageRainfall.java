@@ -1,4 +1,4 @@
-package Chapter4_LoopsFiles.exercises;
+package Assignment1_Rainfall;
 
 import java.util.Scanner;
 
@@ -18,7 +18,7 @@ import java.util.Scanner;
  *
  */
 
-public class ex8_AverageRainfall {
+public class AverageRainfall {
 
     /**
      * Asks the user for number of years. Cannot be less than 1.
@@ -30,11 +30,6 @@ public class ex8_AverageRainfall {
 
         System.out.print("Enter the number of years: ");
         int numYears = scanner.nextInt();
-
-        while(numYears < 1){
-            System.out.print("Invalid. Enter 1 or greater: ");
-            numYears = scanner.nextInt();
-        }
 
         return numYears;
     }
@@ -50,8 +45,7 @@ public class ex8_AverageRainfall {
      */
     public static double getRainfallAmount(int year, int month){
 
-        System.out.println("Enter the rainfall, in centimeters, for each month.");
-        System.out.print("Year " + year + " month " + month + ": ");
+        System.out.print(String.format("Year %s month %s: ", year, month));
 
         Scanner scanner = new Scanner(System.in);
         double rainfall = scanner.nextDouble();
@@ -68,14 +62,41 @@ public class ex8_AverageRainfall {
 
     public static void main(String[] args) {
 
-        final int MONTHS = 12;
-        int numYears = getYears();
+        final int MONTHS_PER_YEAR = 12;
+        int numYears;
+        double validRainfall;
+        double totalRainfall = 0;
+        int monthCount;
+        double averageRainfall;
+
+
+        numYears = getYears();
+        if(numYears < 1){
+            System.out.println("The number of years is less than 1. Program will exit...");
+            System.exit(1);
+        }
+
+        // Now we can compute number of months in all the years.
+        monthCount = numYears * MONTHS_PER_YEAR;
+
+        // Input the rainfall data.
+        System.out.println("Enter the rainfall, in centimeters, for each month.");
 
         for(int y = 0; y < numYears; y++){
-            for(int m = 0; m < MONTHS; m++){
-                System.out.println("Please enter the inches of rainfall: ");
+            for(int m = 0; m < MONTHS_PER_YEAR; m++){
+
+                validRainfall = getRainfallAmount(y+1, m+1);
+                totalRainfall += validRainfall;
             }
         }
 
+        // Compute average.
+        averageRainfall = totalRainfall / monthCount;
+
+        System.out.println("\nNumber of months: " + monthCount);
+        System.out.println("Total rainfall: " + totalRainfall + " centimeters");
+        System.out.println("Average monthly rainfall: " + averageRainfall);
+
+        System.exit(0);
     }
 }

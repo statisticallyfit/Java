@@ -20,13 +20,13 @@ public class SalesTax {
         price = keyboard.nextDouble();
 
         //calculations
-        tax = price + TAX_RATE;
-        total = price * tax;
+        tax = price * TAX_RATE;
+        total = price + tax;
 
         //display
         System.out.println();
-        System.out.println(item + "        $" + price);
-        System.out.println("Tax              $" + tax);
-        System.out.println("Total            $" + total);
+        System.out.println(String.format("%s        $%.2f", item, price));
+        System.out.println(String.format("Tax         $%.2f", tax));
+        System.out.println(String.format("Total       $%.2f", total));
     }
 }

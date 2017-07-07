@@ -34,6 +34,9 @@ public class NextLineStringProblem {
         // (newline created when user presses ENTER)...
         // ... because while nextInt, nextDouble are designed to skip newlines
         // and continue reading, the nextLine() method is not.
+        // Result is that nextLine() does not read any input and terminates, skipping
+        // to next command in program.
+
         // Must consume it fo flush buffer then read good input.
         //todo - uncomment for this to work.
         //String flushed = keyboard.nextLine();
