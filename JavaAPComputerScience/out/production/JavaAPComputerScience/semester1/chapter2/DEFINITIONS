@@ -1,0 +1,63 @@
+DEFINITIONS:
+
+1) instance method: is not static, needs a class object as its executor.
+2) class method: is static, can be called with class. Ex: Vic.reset(args);
+----> In turtle: switchTo() is class method since color applies to drawing surface, not individual Turtle
+
+4) precondition: must state what method assumes to be true to function correctly.
+Precondition is not precondition if the assumption is met.
+EXAMPLE1: not enough slots is not precondition since slot args are given to main method, which is called automatically.
+BUT must code to satisfy precondition (make sure it's met)
+
+5) action method: changes state of one or more object; void type
+EXAMPLE: sam.moveOn(), sue.putCD()
+6) query method: does not change object state; returns value
+EXAMPLE: sam.seesSlot()
+7) short-circuiting: if first operand x is false, the second y is not evaluation
+EXAMPLE: x || y
+
+
+UML diagrams:
+* dotted line - dependency
+* solid line - inheritance = generalization.
+* underline class methods + called methods
+
+
+* rectangle that represents class has Class name in top box, not underlined; middle part
+for attributes is left blank in some diagrams; put all methods used in the class in the
+respective class rectangle: all static methods must be underlined
+[a.k.a UML class diagram]
+
+* rectangle that represents object has variablename:classname in top, underlined; middle part
+ is for writing about object attributes; bottom part is left blank
+ [a.k.a UML object diagram]
+
+
+* method specification: describing what method does in all situations.
+IMPLIED that method should verify another method's preconditions before calling it.
+* fault (bug): method's failure of living up to its specification.
+* precondition ...
+MAKES the calling method responsible for preconditions of the called method.
+EXAMPLE: if method M calls P when P's precondition is false,
+M has bug (did not check P's preconditions) and P has deficiency (if it checks precondition, because M was supposed to do it)
+
+* CLIENT-SERVER RELATION: can be both dependencies and generalizations
+****dependencies (dotted line:"uses" relation) and generalization (solid line: "inherits" relation)
+are both types of client-server relations.
+--> server class instances may be parameters of client class
+--> client class may return instances of server class
+--> client class may use server's methods
+EXAMPLE2: [Vic is the SERVER for the dependent CLIENT BringThreeBack].
+
+
+
+
+LOGICAL OPERATORS:
+* AND &&  --- only true if both true
+    (T && T = true)
+    (T && F = false)
+    (F && F = false)
+* OR || --- takes the only true one
+    (T || F = true)
+    (T || T = true)
+    (F || F = false)

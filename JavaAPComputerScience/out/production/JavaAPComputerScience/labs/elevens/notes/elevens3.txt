@@ -1,0 +1,404 @@
+ACTIVITY 10: 
+
+Exercises:  
+ 
+1. The Activity10 Starter Code folder contains all the code for a complete working Elevens game.
+Review the code in the ElevensBoard class. Identify the changes that would be necessary to
+implement the Thirteens game.  
+
+
+* change BOARD_SIZE to 10
+* change the isLegal() method to check if the card is king if it is a single card, and check 
+if the pair sums to 13 if a pair is given
+* change the anotherPlayIsPossible() method to return true if either the pair sums to 13
+or if a king is chosen
+* change the containsPairSum11 to return true if the cards' points add up to 13 instead of 11
+* change the containsJQK method to return true if the chosen index holds a king instead of J, Q and K. 
+
+
+2. Copy and paste the ElevensBoard.java file into a new file, ThirteensBoard.java.
+Make the necessary changes to this file to implement the Thirteens game. 
+
+
+
+
+
+
+import java.util.List;
+
+public class ThirteensBoard extends Board {
+
+    private static final int BOARD_SIZE = 10;
+    private static final String[] RANKS = {"ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"};
+    private static final String[] SUITS = {"spades", "hearts", "diamonds", "clubs"};
+    private static final int[] POINT_VALUES = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0};
+    private static final boolean I_AM_DEBUGGING = false;
+
+    /**
+     * Creates a new <code>ElevensBoard</code> instance.
+     */
+    public ThirteensBoard() {
+        super(BOARD_SIZE, RANKS, SUITS, POINT_VALUES);
+    }
+
+    /**
+     * Determines if the selected cards form a valid group for removal.
+     * In Elevens, the legal groups are (1) a pair of non-face cards
+     * whose values add to 11, and (2) a group of three cards consisting of
+     * a jack, a queen, and a king in some order.
+     * @param selectedCards the list of the indices of the selected cards.
+     * @return true if the selected cards form a valid group for removal;
+     *         false otherwise.
+     */
+    @Override
+    public boolean isLegal(List<Integer> selectedCards) {
+        if (selectedCards.size() == 2) {
+            return containsPairSum13(selectedCards);
+        } else if (selectedCards.size() == 1) {
+            return containsKing(selectedCards);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Determine if there are any legal plays left on the board.
+     * In Elevens, there is a legal play if the board contains
+     * (1) a pair of non-face cards whose values add to 11, or (2) a group
+     * of three cards consisting of a jack, a queen, and a king in some order.
+     * @return true if there is a legal play left on the board;
+     *         false otherwise.
+     */
+    @Override
+    public boolean anotherPlayIsPossible() {
+        List<Integer> cIndexes = cardIndexes();
+        return containsPairSum13(cIndexes) || containsKing(cIndexes);
+    }
+
+    /**
+     * Check for an 11-pair in the selected cards.
+     * @param selectedCards selects a subset of this board.  It is list
+     *                      of indexes into this board that are searched
+     *                      to find an 11-pair.
+     * @return true if the board entries in selectedCards
+     *              contain an 11-pair; false otherwise.
+     */
+    private boolean containsPairSum13(List<Integer> selectedCards) {
+        for(int sk1 = 0; sk1 < selectedCards.size() - 1; sk1++){
+            int k1 = selectedCards.get(sk1);
+            for(int sk2 = sk1 + 1; sk2 < selectedCards.size(); sk2++){
+                int k2 = selectedCards.get(sk2);
+                if(this.cardAt(k1).pointValue() + this.cardAt(k2).pointValue() == 13) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check for a JQK in the selected cards.
+     * @param selectedCards selects a subset of this board.  It is list
+     *                      of indexes into this board that are searched
+     *                      to find a JQK group.
+     * @return true if the board entries in selectedCards
+     *              include a jack, a queen, and a king; false otherwise.
+     */
+    private boolean containsKing(List<Integer> selectedCards) {
+
+        for (Integer selectedIndex : selectedCards) {
+            if (this.cardAt(selectedIndex).rank().equals("king")) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+
+
+
+
+
+
+3. The Activity10 Starter Code folder also contains the ElevensGUIRunner.java file that is
+shown below. This program creates the board (an ElevensBoard object). Then it creates the GUI
+(a CardGameGUI object). Finally, it displays the GUI by calling its displayGame method. 
+Review the code in the ElevensGUIRunner class as shown below. Identify the changes that
+would be necessary to implement the Thirteens game. 
+ 
+/** 
+ * This is a class that plays the GUI version of the Elevens game.
+ * See accompanying documents for a description of how Elevens is played.
+ */
+public class ElevensGUIRunner { 
+ 
+ /** 
+  * Plays the GUI version of Elevens. 
+  * @param args is not used. 
+  */
+ public static void main(String[] args) {
+    Board board = new ElevensBoard();
+    CardGameGUI gui = new CardGameGUI(board);
+    gui.displayGame();
+ }
+} 
+
+
+
+There is no change to the CardGameGUI class since no ElevensBoard-specific code is contained in it. 
+But instead of
+    Board board = new ElevensBoard();
+write
+    Board board = new ThirteensBoard();
+
+
+
+4. Copy and paste the ElevensGUIRunner.java file into a new file, 
+ThirteensGUIRunner.java. Make the necessary changes to this file to implement the
+Thirteens game. 
+
+
+public class ThirteensGUIRunner {
+
+    /**
+     * Plays the GUI version of Thirteens.
+     * @param args is not used.
+     */
+    public static void main(String[] args) {
+        Board board = new ThirteensBoard();
+        CardGameGUI gui = new CardGameGUI(board);
+        gui.displayGame();
+    }
+}
+
+
+
+
+5. Run the ThirteensGUIRunner program and test your new Thirteens game. 
+
+
+
+
+
+
+
+
+
+ACTIVITY 11: 
+
+
+
+Exercises: completed, final ElevensBoard class
+
+
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * The ElevensBoard class represents the board in a game of Elevens.
+ */
+public class ElevensBoard extends Board {
+
+    private static final int BOARD_SIZE = 9;
+    private static final String[] RANKS = {"ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"};
+    private static final String[] SUITS = {"spades", "hearts", "diamonds", "clubs"};
+    private static final int[] POINT_VALUES = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0};
+    private static final boolean I_AM_DEBUGGING = true;
+
+    /**
+     * Creates a new <code>ElevensBoard</code> instance.
+     */
+    public ElevensBoard() {
+        super(BOARD_SIZE, RANKS, SUITS, POINT_VALUES);
+    }
+
+    /**
+     * Determines if the selected cards form a valid group for removal.
+     * In Elevens, the legal groups are (1) a pair of non-face cards
+     * whose values add to 11, and (2) a group of three cards consisting of
+     * a jack, a queen, and a king in some order.
+     * @param selectedCards the list of the indices of the selected cards.
+     * @return true if the selected cards form a valid group for removal;
+     *         false otherwise.
+     */
+    @Override
+    public boolean isLegal(List<Integer> selectedCards) {
+        if (selectedCards.size() == 2) {
+            return findPairSum11(selectedCards).size() > 0;
+        } else if (selectedCards.size() == 3) {
+            return findJQK(selectedCards).size() > 0;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Determine if there are any legal plays left on the board.
+     * In Elevens, there is a legal play if the board contains
+     * (1) a pair of non-face cards whose values add to 11, or (2) a group
+     * of three cards consisting of a jack, a queen, and a king in some order.
+     * @return true if there is a legal play left on the board;
+     *         false otherwise.
+     */
+    @Override
+    public boolean anotherPlayIsPossible() {
+        List<Integer> cIndexes = cardIndexes();
+        return findPairSum11(cIndexes).size() > 0 || findJQK(cIndexes).size() > 0;
+    }
+
+    /**
+     * Look for an 11-pair in the selected cards.
+     * @param selectedCards selects a subset of this board.  It is list
+     *                      of indexes into this board that are searched
+     *                      to find an 11-pair.
+     * @return a list of the indexes of an 11-pair, if an 11-pair was found;
+     *         an empty list, if an 11-pair was not found.
+     */
+    private List<Integer> findPairSum11(List<Integer> selectedCards){
+        for(int sk1 = 0; sk1 < selectedCards.size() - 1; sk1++){
+            int k1 = selectedCards.get(sk1);
+            for(int sk2 = sk1 + 1; sk2 < selectedCards.size(); sk2++){
+                int k2 = selectedCards.get(sk2);
+                if(this.cardAt(k1).pointValue() + this.cardAt(k2).pointValue() == 11) {
+                    List<Integer> pair = new ArrayList<Integer>();
+                    pair.add(k1);
+                    pair.add(k2);
+                    return pair;
+                }
+            }
+        }
+        return new ArrayList<Integer>();
+    }
+
+
+    /**
+     * Look for a JQK in the selected cards.
+     * @param selectedCards selects a subset of this board.  It is list
+     *                      of indexes into this board that are searched
+     *                      to find a JQK group.
+     * @return a list of the indexes of a JQK, if a JQK was found;
+     *         an empty list, if a JQK was not found.
+     */
+    private List<Integer> findJQK(List<Integer> selectedCards){
+        boolean foundJack = false;
+        boolean foundQueen = false;
+        boolean foundKing = false;
+
+        int jackIndex = 0;
+        int queenIndex = 0;
+        int kingIndex = 0;
+
+        for (Integer selectedIndex : selectedCards) {
+            Card aCard = this.cardAt(selectedIndex);
+            if (aCard.rank().equals("jack")) {
+                foundJack = true;
+                jackIndex = selectedIndex;
+            } else if (aCard.rank().equals("queen")) {
+                foundQueen = true;
+                queenIndex = selectedIndex;
+            } else if(aCard.rank().equals("king")) {
+                foundKing = true;
+                kingIndex = selectedIndex;
+            }
+        }
+        List<Integer> triplet = new ArrayList<Integer>();
+        triplet.add(jackIndex);
+        triplet.add(queenIndex);
+        triplet.add(kingIndex);
+
+        return (foundJack && foundQueen && foundKing) ? triplet : new ArrayList<Integer>();
+    }
+
+
+
+
+
+    //-----------------------------METHODS FOR SIMULATION ------------------
+
+
+    /**
+     * Looks for a legal play on the board.  If one is found, it plays it.
+     * @return true if a legal play was found (and made); false othewise.
+     */
+    public boolean playIfPossible() {
+        return playPairSum11IfPossible() || playJQKIfPossible();
+    }
+
+    /**
+     * Looks for a pair of non-face cards whose values sum to 11.
+     * If found, replace them with the next two cards in the deck.
+     * The simulation of this game uses this method.
+     * @return true if an 11-pair play was found (and made); false othewise.
+     */
+    private boolean playPairSum11IfPossible() {
+        List<Integer> cIndexes = cardIndexes();
+        List<Integer> pair = findPairSum11(cIndexes);
+		if(pair.size() > 0){
+            replaceSelectedCards(pair);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Looks for a group of three face cards JQK.
+     * If found, replace them with the next three cards in the deck.
+     * The simulation of this game uses this method.
+     * @return true if a JQK play was found (and made); false othewise.
+     */
+    private boolean playJQKIfPossible() {
+        List<Integer> cIndexes = cardIndexes();
+        List<Integer> triplet = findJQK(cIndexes);
+        if(triplet.size() > 0){
+            replaceSelectedCards(triplet);
+            return true;
+        }
+        return false;
+    }
+}
+
+
+
+
+
+
+Questions: 
+
+Questions: 
+1. Set the I_AM_DEBUGGING flags to false and GAMES_TO_PLAY to 10. Run the
+ElevensSimulation program a few times and record the percentage of games won for each run. 
+What is the range of win percentages that you saw? Were the percentages fairly consistent, or did they
+vary quite a bit? 
+
+The range I got was 0% to 30% of wins for 10 games. After repeated 10 game simulations, 
+thethe percentage of wins varied quite a bit. For instance, for a few trials in a row, I would
+get 3 full losses in a row (0%) then I could get 2 of 3 wins in a row (two 30%s in a row), and then a 20%, and
+then a while without any wins, then one win (10%). 
+
+
+2. Increase the number of games to play to 100. Are the win percentages more consistent from run 
+to run? 
+
+The win percentages are more consistent with each other. For instance, my percentages are: 
+11, 7, 7, 6, 9, 13, 6, 7, 6, 9, 9, 8, 11, 7, 11 percent for a few trials. 
+
+3. Experiment with simulating different numbers of games. How many games do you need to play in
+order to get consistent results from run to run? 
+
+With games = 1000, I got: 10.8, 10, 11.7, 12, 10.7, 10.8, 11.1 percent of games won. 
+These are much closer or consistent amongst themselves compared to when games = 100. 
+
+With games = 10,000 I got: 11.1, 10.5, 10.9, 10.8, 10.7, 10.6, 10.9, 10.6, 11.1 percent games won. 
+These are very close amongst themselves since only the last digit behind the decimal changes; very rarely, the digits
+in the ones and tens place change. 
+
+
+When games = 10,900, I got win percentages: 10.4, 10.7, 10.5, 10.9, 10.6, 10.3, 10.6, 10.5, 10.9, 10.7
+which are extremely close to each other. The average seems to be about: 10.61 percent of wins. 
+
+
+THerefore, the larger the number of games, the more consistent the percent of wins. At games = 10,900
+the win percents are very consistent with each other. 

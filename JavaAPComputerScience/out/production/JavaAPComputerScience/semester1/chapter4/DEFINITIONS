@@ -1,0 +1,118 @@
+* boolean operator: ! (not), && (and), || (or) assign true/false value to variable when applied.
+* increment/decrement operators: ++, --
+* binary operator: symbol which combines two values (operands) to obtain new value.
+For example: && and || are binary.
+* unary operator: symbol applied to one operand only. Example: !(not)
+
+*** NOTE: when dividing negative by position number, integer result AND remainder are BOTH negative.
+
+* concatenation operator (+) adds an int to a string to create new string.
+* loop control variable: variable in a continuation condition whose value is changed by loop.
+* initializer step: int value = 0 (example) to assign starting value of loop control variable.
+* update step: to modify loop control variable (example k++).
+
+*** NOTE:
+--> if you declare loop control variable in initializer step, you cannot mention it outside for-loop.
+--> if not, you can mention it outside for loop.
+
+* for loop: for(initializer; condition; update)
+
+*component (found in arg in showMessageDialog()) means something that performs a clear function. Ex: null is component.
+section 4.7: component is graphical object like a window.
+
+
+* encapsulation ~ "data hiding":
+--> making fields in class private.
+--> "data hiding": accessing the private fields with public methods so that users don't know how class stores its data.
+--> purpose: abstraction: sending message to an object rather than doing task directly in main method
+--> EXAMPLE: (tutorialspoint encapsulation)
+
+
+
+* abstraction: hiding away irrelevant details from business logic
+
+* inheritance: subclass inherits all public fields of superclass (not private fields (variables, methods)).
+
+/*
+ * Polymorphism:execution of polymorphic INSTANCE ONLY method calls.
+ *
+ * polymorphic: having more than one form (putCD() statement in the fillSlots() method
+ * is polymorphic; decision which method to call is made at runtime.
+ *
+ *
+ * EXAMPLE OF POLYMORPHISM: Using Looper object to call fillSlots() (which has putCD() in it)
+ * does not change the itsNumFilled or itsNumEmpty.
+ *
+ * Only using BigVic object to call fillSlots() will change
+ * itsNumFilled and itsNumEmpty
+ *
+ *
+ * EXAMPLE 2: the command shouldContinue() in the BasicGame class is polymorphic
+ * since it has different effects depending on class of object that is executing it.
+ *
+ */
+
+
+
+* state of an object: data inside object; determined by instance variables.
+* mutator method: "setter methods" --> TYPE OF ACTION METHOD: modifies executor's state (ex: askUsersNextChoice())
+* accessor method: "getter methods: --> TYPE OF QUERY METHOD: returns state (ex: shouldContinue())
+
+* Object class: class in Sun Standard Library-- superclass of every Java class.
+* if you define class without "extends Object" compiler gives DEFAULT EXTENSION.
+
+* super()
+--> used in subclass to call the superclass constructor to get instance variables of the parent class.
+--> if super() is used, the superclass no-arg constructor is called
+--> if super(parameter list) is used, superclass constructor + args is called.
+
+* super
+--> used in subclass
+--> invokes overridden method in superclass.
+--> Example: BigVic creates a new putCD() that overrides old one in Vic.
+Can call the old putCD() with super.putCD()
+
+MORE INFO: (docs oracle super below source)
+
+
+
+* constructor
+--> can be called natural constructor (primary purpose to initialize)
+--> can call instance variables of superclass with super() (so can natural constructor)
+--> assigns default values to variables (ex: can define "originalPosition" with value of getPosition() in constructor).
+--> can use parameters:
+ex: parent class needs to have constructor with parameters (super has no parameters + is optional)
+ex: child class constructor takes parameters of the parent class constructor +
+child class's own instance variables (super takes the inherited parameters + is not optional (pg10 ).
+(EX: Person + Patient classes).
+
+* driver program: application program to test methods of class.
+
+
+
+* signature: method name + types of its parameters
+(NOT parameter names or return type)
+Example: Time(int, int), toString(), add(Time)
+
+* OVERLOADING: methods in the same class that have same names but different parameters with same types.
+Example:
+public String toString(String timezone)
+public String toString()
+
+* OVERRIDING: method heading in subclass is same as method heading in superclass.
+** Applies to instance methods, not class methods
+
+
+* equals() --> tests if two values refer to same object
+* == --> tests if two values contain same values
+
+
+* shadowed: instance variable is shadowed when local variable has same name.
+
+
+
+
+todo: http://beginnersbook.com/2013/05/encapsulation-in-java/
+todo: http://javabeginnerstutorial.com/core-java-tutorial/overloading/
+todo: https://docs.oracle.com/javase/tutorial/java/IandI/super.html
+todo: http://www.tutorialspoint.com/java/java_encapsulation.htm

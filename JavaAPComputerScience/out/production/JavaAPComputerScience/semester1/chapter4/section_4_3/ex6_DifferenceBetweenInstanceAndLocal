@@ -1,0 +1,13 @@
+
+Instance variable:
+* Each instance of the class (object) contains its own separate copy of the instance variable;
+this contrasts with a static variable.
+* Declared in the class, outside any method or constructor.
+* Can have default values and access modifiers.
+* Can be declared before or after its use in the class.
+
+
+Local variable:
+* Declared inside a method or constructor.
+* Can have default values and access modifiers.
+* Must be declared before its use.

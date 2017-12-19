@@ -1,0 +1,368 @@
+ACTIVITY 7: 
+
+Questions:   
+1. What items would be necessary if you were playing a game of Elevens at your desk (not on the
+computer)? List the private instance variables needed for the ElevensBoard class. 
+ 
+A deck of cards and a board or table. 
+
+ 
+2. Write an algorithm that describes the actions necessary to play the Elevens game.
+
+Step 1: create a deck. This is automatically shuffled
+Step 2: deal 9 cards from the deck onto the board
+Step 3: are repeated while there are pairs summing to 11 or there are triplets of JQK: 
+	--> locate a pair summing to 11 or a triplet of JQK
+	--> replace these cards with more cards from the shuffled deck. 
+	--> repeat
+ 
+
+3. Now examine the partially implemented ElevensBoard.java file found in the Activity7 
+Starter Code directory. Does the ElevensBoard class contain all the state and behavior
+necessary to play the game? 
+
+Yes, since it contains the deck, the cards in the board, the board size, the appropriate
+ranks, suits, and point values for the 52-card deck. It also has ways to create a new game, 
+deal the cards, check if the board is empty, find the board and deck size, replace selected
+cards, bring a card from a specific location, check if the game is won, and check if
+a selected group of cards are legal for removal, by checking that they sum to 11 or are a triplet JQK. 
+
+
+4. ElevensBoard.java contains three helper methods. These helper methods are private
+because they are only called from the ElevensBoard class.
+
+a. Where is the dealMyCards method called in ElevensBoard? 
+
+It is called in the constructor and in the newGame() method. 
+
+b. Which public methods should call the containsPairSum11 and containsJQK
+methods?
+
+The isLegal() and anotherPlayIsPossible() methods must call these two since they 
+must use them to check if the cards chosen (in isLegal()'s case) or if the cards that are available
+(in anotherPlayIsPossible()'s case) sum to 11 or are J, Q, K. 
+
+ 
+c. It’s important to understand how the cardIndexes method works, and how the list that it
+returns is used. Suppose that cards contains the elements shown below. Trace the execution 
+of the cardIndexes method to determine what list will be returned. Complete the diagram
+below by filling in the elements of the returned list, and by showing how those values index
+cards. Note that the returned list may have less than 9 elements.
+
+The returned list is 0, 1, 3, 6, 7 because at least locations, the element is not null. 
+For instance: 
+For k = 0: since k = 0 is J of hearts so isn't null, its index is put in the selected list. 
+For k = 1: the element is 6 of clubs, so its index is put in the list. 
+For k = 2: the element is null, so its index is not put in the list. The process repeats. 
+
+
+d. Complete the following printCards method to print all of the elements of cards that are 
+indexed by cIndexes.
+ 
+public static void printCards(ElevensBoard board){
+        List<Integer> cIndexes = board.cardIndexes();
+
+        for(int i = cIndexes.get(0); i < cIndexes.get(cIndexes.size() - 1); i++){
+            System.out.println(board.cardAt(i));
+        }
+    }
+
+e. Which one of the methods that you identified in question 4b above needs to call the 
+cardIndexes method before calling the containsPairSum11 and containsJQK
+methods? Why?
+
+The anotherPlayIsPossible() method since it doesn't have any parameter like isLegal() that
+provides the list of indexes, therefore it needs to get the indexes from cardIndexes method.
+
+
+
+
+
+
+
+
+
+
+ACTIVITY 8: 
+
+Questions:   
+1. Discuss the similarities and differences between Elevens, Thirteens, and Tens.  
+
+Similarities: 
+All games have a board and the same 52-card deck. All games have a need to shuffle and deal
+the cards to put them on the board. They all must have a procedure that makes a new game and
+resets the states. 
+All have a board size and deck size. 
+They all must check if the game is won. 
+They also all must check if a move is legal and if another play is possible, according to their rules. 
+
+
+Differences: 
+Elevens requires that a pair sum to 11 or a triplet is JQK. Also, the board must have 9 cards. 
+Thirteens requires a 10 card board and requires that a pair of cards sum to 13 or that kings are
+selected. 
+Tens requires a 13-card board. It requires that pairs of cards sum to 10 and are removed, as are
+quartets of kings, queens, jacks, and tens that are the same rank. 
+Therefore, the abstract Board methods anotherPlayIsPossible() and isLegal() will be different
+for each game. 
+
+ 
+2. As discussed previously, all of the instance variables are declared in the Board class. But it is the
+ElevensBoard class that “knows” the board size, and the ranks, suits, and point values of the
+cards in the deck. How do the Board instance variables get initialized with the ElevensBoard
+values? What is the exact mechanism?
+
+
+The ElevensBoard constructor calls super(BOARD_SIZE, RANKS, SUITS, POINT_VALUES). This is a call
+to the Board constructor, carrying the values of the ElevensBoard instance variables. 
+Then, the Board constructor creates an empty card array that holds the cards in the board using 
+the BOARD_SIZE as the size. 
+It also makes a deck with the values using the arrays of ranks, suits and points. 
+Then it deals the cards so it places 9 cards in the card array (the board). Thus, the cards array and deck
+are initialized in the Board class. 
+
+ 
+ 
+3. Now examine the files Board.java, and ElevensBoard.java, found in the Activity8
+Starter Code directory. Identify the abstract methods in Board.java. See how these
+methods are implemented in ElevensBoard. Do they cover all the differences between Elevens,
+Thirteens, and Tens as discussed in question 1? Why or why not?  
+
+
+Yes, since anotherPlayIsPossible() returns true if the cards chosen are either a sum of 11 or
+a triplet JQK. Also, the isLegal() method returns true if there are 2 cards chosen 
+and their sum is 11, or true if there are 3 chosen and they are a JQK triplet. 
+Also, the Cards array in Board will have 9 cards since the BOARD_SIZE value in ElevensBoard
+is intialized to 9.
+
+
+
+
+
+
+ACITIVTY 9: 
+
+
+Exercises: 
+
+
+1. Complete the
+ElevensBoard class in the Activity9 Starter Code folder, implementing the 
+following methods. 
+ 
+Abstract methods from the Board class: 
+a. isLegal — This method is described in the method heading and related comments below.
+The implementation should check the number of cards selected and utilize the ElevensBoard
+helper methods.  
+ /**
+  * Determines if the selected cards form a valid group for removal.
+  * In Elevens, the legal groups are (1) a pair of non-face cards
+  * whose values add to 11, and (2) a group of three cards consisting of
+  * a jack, a queen, and a king
+ in some order.
+  * @param selectedCards the list of the indexes of the selected cards.
+  * @return true if the selected cards form a valid group for removal;
+  *         false otherwise.
+  */
+ @Override 
+ public boolean isLegal(List<Integer> selectedCards)
+
+b. anotherPlayIsPossible — This method should also utilize the helper methods. It
+should be very short. 
+ 
+/**
+ * Determine if there are any legal plays left on the board.
+ * In Elevens, there is a legal play if the board contains
+ * (1) a pair of non-face cards whose values add to 11, or (2) a group
+ * of three cards consisting of a jack, a queen, and a king
+ in some order.
+ * @return true if there is a legal play left on the board;
+ *         false otherwise.
+ */
+@Override 
+ public boolean anotherPlayIsPossible()
+ 
+ 
+ElevensBoard helper methods: 
+c. containsPairSum11 — This method determines if the selected elements of cards
+contain a pair of cards whose point values add to 11.
+ 
+/**
+ * Check for an 11-pair in the selected cards.
+ * @param selectedCards selects a subset of this board.  It is this list
+ *                      of indexes into this board that are searched
+ *                      to find an 11-pair.
+ * @return true if the board entries indexed in selectedCards
+ *              contain an 11-pair; false otherwise.
+ */
+private boolean containsPairSum11(List<Integer> selectedCards) 
+
+ 
+d. containsJQK — This method determines if the selected elements of cards contains a
+jack, a queen, and a king in some order.
+ 
+ /**
+  * Check for a JQK in the selected cards.
+  * @param selectedCards selects a subset of this board.  It is this list
+  *                      of indexes into this board that are searched
+  *                      to find a JQK-triplet.
+  * @return true if the board entries indexed in selectedCards
+  *              include a jack, a queen, and a king; false otherwise.
+  */ 
+ 
+ 
+private boolean containsJQK(List<Integer> selectedCards)
+
+
+
+
+
+
+
+
+-->
+
+
+import java.util.List;
+
+/**
+ * The ElevensBoard class represents the board in a game of Elevens.
+ */
+public class ElevensBoard extends Board {
+
+    private static final int BOARD_SIZE = 9;
+    private static final String[] RANKS = {"ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"};
+    private static final String[] SUITS = {"spades", "hearts", "diamonds", "clubs"};
+    private static final int[] POINT_VALUES = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0};
+    private static final boolean I_AM_DEBUGGING = false;
+
+    /**
+     * Creates a new <code>ElevensBoard</code> instance.
+     */
+    public ElevensBoard() {
+        super(BOARD_SIZE, RANKS, SUITS, POINT_VALUES);
+    }
+
+    /**
+     * Determines if the selected cards form a valid group for removal.
+     * In Elevens, the legal groups are (1) a pair of non-face cards
+     * whose values add to 11, and (2) a group of three cards consisting of
+     * a jack, a queen, and a king in some order.
+     * @param selectedCards the list of the indices of the selected cards.
+     * @return true if the selected cards form a valid group for removal;
+     *         false otherwise.
+     */
+    @Override
+    public boolean isLegal(List<Integer> selectedCards) {
+        if (selectedCards.size() == 2) {
+            return containsPairSum11(selectedCards);
+        } else if (selectedCards.size() == 3) {
+            return containsJQK(selectedCards);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Determine if there are any legal plays left on the board.
+     * In Elevens, there is a legal play if the board contains
+     * (1) a pair of non-face cards whose values add to 11, or (2) a group
+     * of three cards consisting of a jack, a queen, and a king in some order.
+     * @return true if there is a legal play left on the board;
+     *         false otherwise.
+     */
+    @Override
+    public boolean anotherPlayIsPossible() {
+        List<Integer> cIndexes = cardIndexes();
+        return containsPairSum11(cIndexes) || containsJQK(cIndexes);
+    }
+
+    /**
+     * Check for an 11-pair in the selected cards.
+     * @param selectedCards selects a subset of this board.  It is list
+     *                      of indexes into this board that are searched
+     *                      to find an 11-pair.
+     * @return true if the board entries in selectedCards
+     *              contain an 11-pair; false otherwise.
+     */
+    private boolean containsPairSum11(List<Integer> selectedCards) {
+		for(int sk1 = 0; sk1 < selectedCards.size() - 1; sk1++){
+            int k1 = selectedCards.get(sk1);
+            for(int sk2 = sk1 + 1; sk2 < selectedCards.size(); sk2++){
+                int k2 = selectedCards.get(sk2);
+                if(this.cardAt(k1).pointValue() + this.cardAt(k2).pointValue() == 11) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check for a JQK in the selected cards.
+     * @param selectedCards selects a subset of this board.  It is list
+     *                      of indexes into this board that are searched
+     *                      to find a JQK group.
+     * @return true if the board entries in selectedCards
+     *              include a jack, a queen, and a king; false otherwise.
+     */
+    private boolean containsJQK(List<Integer> selectedCards) {
+		boolean foundJack = false;
+        boolean foundQueen = false;
+        boolean foundKing = false;
+
+        for (Integer selectedIndex : selectedCards) {
+            Card aCard = this.cardAt(selectedIndex);
+            if (aCard.rank().equals("jack")) {
+                foundJack = true;
+            } else if (aCard.rank().equals("queen")) {
+                foundQueen = true;
+            } else if(aCard.rank().equals("king")) {
+                foundKing = true;
+            }
+        }
+        return foundJack && foundQueen && foundKing;
+    }
+}
+
+
+
+
+
+Questions: 
+
+1. The size of the board is one of the differences between Elevens and Thirteens. Why is size not an
+abstract method?
+
+Size is an instance variable that belongs personally to the subclass - either ElevensBoard, 
+ThirteensBoard, or TensBoard. It could not be in Board since it would have to be an 
+instance variable and therefore could not be defined since the type of board is unknown.
+
+ 
+2. Why are there no abstract methods dealing with the selection of the 
+cards to be removed or replaced in the array cards? 
+
+The replacing and removing procedure is the same for each game, and so can be in the Board class, 
+since it is code that is common for all three games. If it were abstract, it would have 
+to be verbosely defined three times the same way in all three classes.
+
+ 
+3. Another way to create “IS-A” relationships is by implementing interfaces. Suppose that 
+instead of
+creating an abstract Board class, we created the following Board interface, and had
+ElevensBoard implement it. Would this new scheme allow the Elevens GUI to call isLegal
+and anotherPlayIsPossible polymorphically? Would this alternate design work as well as
+the abstract Board class design? Why or why not?
+ 
+     public interface Board
+     {
+        boolean isLegal(List<Integer> selectedCards); 
+
+        boolean anotherPlayIsPossible();
+     }
+
+It would allow the GUI to call the isLegal and anotherPlayIsPossible polymorphically, 
+since the ElevensBoard is subclassed to Board, so it is of type Board. 
+But it would not work as well as the abstract Board class since no methods common to all three
+games could be implemented in the interface. Technically, this would work but it would not
+be as efficient as the current solution. 
